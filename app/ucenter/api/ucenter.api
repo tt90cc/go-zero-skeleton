@@ -1,0 +1,29 @@
+type (
+	LoginReq {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+	LoginReply {
+		Id          int64  `json:"id"`
+		Account     string `json:"account"`
+		AccessToken string `json:"accessToken"`
+	}
+)
+
+type UserinfoReply {
+	Id      int64  `json:"id"`
+	Account string `json:"account"`
+}
+
+service Ucenter {
+	@handler Login
+	post /user/login (LoginReq) returns (LoginReply)
+}
+
+@server(
+	jwt: Auth
+)
+service Ucenter {
+	@handler Userinfo
+	get /user/info returns (UserinfoReply)
+}

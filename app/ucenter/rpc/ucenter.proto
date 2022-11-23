@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "./ucenter";
+
+message UserInfoReq {
+  int64 Id = 1;
+}
+
+message UserInfoReply {
+  int64 Id = 1;
+  string Account = 2;
+}
+
+service Ucenter {
+  rpc UserInfo(UserInfoReq) returns(UserInfoReply);
+}
