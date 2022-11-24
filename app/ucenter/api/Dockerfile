@@ -1,4 +1,4 @@
-FROM golang:1.16-alpine3.15 AS builder
+FROM golang:alpine AS builder
 
 LABEL stage=gobuilder
 
@@ -8,25 +8,27 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
 RUN apk update --no-cache && apk add --no-cache tzdata
 
-WORKDIR /build
+WORKDIR /app
 
-ADD go.mod .
-ADD go.sum .
-RUN go mod download
 COPY . .
+
+RUN go build -ldflags="-s -w" -o main ./app/ucenter/api/ucenter.go
+
 ARG CONF_ENV
-COPY app/ucenter/api/etc/${CONF_ENV}/* /app/etc
-RUN go build -ldflags="-s -w" -o /app/ucenter app/ucenter/api/ucenter.go
+
+RUN mkdir -p publish/etc && \
+    cp ./main publish && \
+    cp -r ./app/ucenter/api/etc/${CONF_ENV}/* publish/etc
 
 
-FROM scratch
+FROM alpine
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=builder /usr/share/zoneinfo/Asia/Shanghai /usr/share/zoneinfo/Asia/Shanghai
 ENV TZ Asia/Shanghai
 
 WORKDIR /app
-COPY --from=builder /app/ucenter /app/ucenter
-COPY --from=builder /app/etc /app/etc
+COPY --from=builder /app/publish .
+RUN chmod +x main
 
-CMD ["./ucenter", "-f", "etc/ucenter.yaml"]
+CMD ["./main", "-f", "etc/ucenter.yaml"]
