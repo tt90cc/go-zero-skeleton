@@ -91,7 +91,7 @@ package handler
 
 import (
     "net/http"
-    "gomicro/common/response"
+    "tt90.cc/ucenter/common/response"
     {{.ImportPackages}}
 )
 

@@ -1,4 +1,4 @@
-module gomicro
+module tt90.cc/ucenter
 
 go 1.16
 

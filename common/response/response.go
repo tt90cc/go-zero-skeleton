@@ -2,8 +2,8 @@ package response
 
 import (
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"gomicro/common/errorx"
 	"net/http"
+	"tt90.cc/ucenter/common/errorx"
 )
 
 type Body struct {
