@@ -1,19 +1,19 @@
 package errorx
 
-var ErrMSG = make(map[int]string)
+import "github.com/spf13/cast"
+
+var message = make(map[uint32]string)
 
 const (
-	ErrOK      = 0   // 成功
-	ErrDEFAULT = 1   // 错误
-	ErrPARAMS  = 499 // 参数错误
-	ErrSYSTEM  = 500 // 系统内部错误
+	OK          = 0   // 成功
+	ERR_DEFAULT = 1   // 错误
+	ERR_PARAMS  = 499 // 参数错误
 )
 
 func init() {
-	ErrMSG[ErrOK] = "请求成功"
-	ErrMSG[ErrDEFAULT] = "系统未知错误"
-	ErrMSG[ErrPARAMS] = "参数错误"
-	ErrMSG[ErrSYSTEM] = "系统内部错误"
+	message[OK] = "请求成功"
+	message[ERR_DEFAULT] = "系统未知错误"
+	message[ERR_PARAMS] = "参数错误"
 }
 
 type CodeError struct {
@@ -29,7 +29,15 @@ func (r *CodeError) Error() string {
 func NewCodeError(code int) error {
 	return &CodeError{
 		Code:    code,
-		Message: ErrMSG[code],
+		Message: MapErrMsg(code),
+	}
+}
+
+func MapErrMsg(errcode int) string {
+	if msg, ok := message[cast.ToUint32(errcode)]; ok {
+		return msg
+	} else {
+		return "服务器开小差啦,稍后再来试一试"
 	}
 }
 

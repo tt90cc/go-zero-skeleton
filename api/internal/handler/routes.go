@@ -2,8 +2,9 @@
 package handler
 
 import (
-	"tt90.cc/ucenter/api/internal/svc"
 	"net/http"
+
+	"tt90.cc/ucenter/api/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
 )

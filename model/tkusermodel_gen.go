@@ -27,10 +27,10 @@ var (
 
 type (
 	tkUserModel interface {
-		Insert(ctx context.Context, data *TkUser) (sql.Result, error)
+		Insert(ctx context.Context, session sqlx.Session, data *TkUser) (sql.Result, error)
 		FindOne(ctx context.Context, id int64) (*TkUser, error)
-		Update(ctx context.Context, newData *TkUser) error
-		Delete(ctx context.Context, id int64) error
+		Update(ctx context.Context, session sqlx.Session, newData *TkUser) error
+		Delete(ctx context.Context, session sqlx.Session, id int64) error
 	}
 
 	defaultTkUserModel struct {
@@ -54,10 +54,13 @@ func newTkUserModel(conn sqlx.SqlConn, c cache.CacheConf) *defaultTkUserModel {
 	}
 }
 
-func (m *defaultTkUserModel) Delete(ctx context.Context, id int64) error {
+func (m *defaultTkUserModel) Delete(ctx context.Context, session sqlx.Session, id int64) error {
 	tkUserIdKey := fmt.Sprintf("%s%v", cacheTkUserIdPrefix, id)
 	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
+		if session != nil {
+			return session.ExecCtx(ctx, query, id)
+		}
 		return conn.ExecCtx(ctx, query, id)
 	}, tkUserIdKey)
 	return err
@@ -80,19 +83,25 @@ func (m *defaultTkUserModel) FindOne(ctx context.Context, id int64) (*TkUser, er
 	}
 }
 
-func (m *defaultTkUserModel) Insert(ctx context.Context, data *TkUser) (sql.Result, error) {
+func (m *defaultTkUserModel) Insert(ctx context.Context, session sqlx.Session, data *TkUser) (sql.Result, error) {
 	tkUserIdKey := fmt.Sprintf("%s%v", cacheTkUserIdPrefix, data.Id)
 	ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?)", m.table, tkUserRowsExpectAutoSet)
+		if session != nil {
+			return session.ExecCtx(ctx, query, data.Account, data.Password, data.CreatedAt, data.UpdatedAt)
+		}
 		return conn.ExecCtx(ctx, query, data.Account, data.Password, data.CreatedAt, data.UpdatedAt)
 	}, tkUserIdKey)
 	return ret, err
 }
 
-func (m *defaultTkUserModel) Update(ctx context.Context, data *TkUser) error {
+func (m *defaultTkUserModel) Update(ctx context.Context, session sqlx.Session, data *TkUser) error {
 	tkUserIdKey := fmt.Sprintf("%s%v", cacheTkUserIdPrefix, data.Id)
 	_, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
 		query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, tkUserRowsWithPlaceHolder)
+		if session != nil {
+			return session.ExecCtx(ctx, query, data.Account, data.Password, data.CreatedAt, data.UpdatedAt, data.Id)
+		}
 		return conn.ExecCtx(ctx, query, data.Account, data.Password, data.CreatedAt, data.UpdatedAt, data.Id)
 	}, tkUserIdKey)
 	return err

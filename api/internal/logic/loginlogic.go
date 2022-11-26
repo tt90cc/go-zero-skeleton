@@ -34,6 +34,8 @@ func (l *LoginLogic) Login(req *types.LoginReq) (resp *types.LoginReply, err err
 		l.Logger.Errorf("[Login] getJwtToken failed. userid:%d, err:%+v", 1, err)
 	} else {
 		resp.AccessToken = token
+		resp.AccessExpire = now + l.svcCtx.Config.Auth.AccessExpire
+		resp.RefreshAfter = now + l.svcCtx.Config.Auth.AccessExpire/2
 	}
 	return
 }

@@ -1,6 +1,8 @@
 Name: Ucenter
 Host: 0.0.0.0
 Port: 8214
+Log:
+  Encoding: plain
 UcenterRpc:
   Etcd:
     Hosts:

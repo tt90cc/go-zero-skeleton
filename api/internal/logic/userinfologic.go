@@ -2,6 +2,8 @@ package logic
 
 import (
 	"context"
+	"github.com/jinzhu/copier"
+	"github.com/pkg/errors"
 	"tt90.cc/ucenter/api/internal/svc"
 	"tt90.cc/ucenter/api/internal/types"
 	"tt90.cc/ucenter/common/errorx"
@@ -27,10 +29,8 @@ func NewUserinfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Userinfo
 func (l *UserinfoLogic) Userinfo() (resp *types.UserinfoReply, err error) {
 	userInfo, err := l.svcCtx.UcenterRpc.UserInfo(l.ctx, &ucenter.UserInfoReq{Id: 1})
 	if err != nil {
-		return nil, errorx.NewCodeError(errorx.ErrDEFAULT)
+		return nil, errors.Wrapf(errorx.NewCodeError(errorx.ERR_DEFAULT), "请求UcenterRpc失败. id:%d,err:%v", 1, err)
 	}
-	return &types.UserinfoReply{
-		Id:      userInfo.Id,
-		Account: userInfo.Account,
-	}, nil
+	_ = copier.Copy(&resp, userInfo)
+	return resp, nil
 }

@@ -7,9 +7,11 @@ type LoginReq struct {
 }
 
 type LoginReply struct {
-	Id          int64  `json:"id"`
-	Account     string `json:"account"`
-	AccessToken string `json:"accessToken"`
+	Id           int64  `json:"id"`
+	Account      string `json:"account"`
+	AccessToken  string `json:"accessToken"`
+	AccessExpire int64  `json:"access_expire"`
+	RefreshAfter int64  `json:"refresh_after"`
 }
 
 type UserinfoReply struct {

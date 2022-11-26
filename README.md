@@ -74,6 +74,8 @@
 
 ### 修改 `handle` 模板
 
+#### 自定义错误
+
 如果本地没有 `~/.goctl/${goctl版本号}/api/handler.tpl` 文件，可以通过模板初始化命令 `goctl template init` 进行初始化
 
 修改模板 `vim ~/.goctl/${goctl版本号}/api/handler.tpl`
@@ -83,7 +85,7 @@ package handler
 
 import (
     "net/http"
-    "tt90.cc/ucenter/common/response"
+    "qidianbox.com/ucenter/common/response"
     {{.ImportPackages}}
 )
 
@@ -103,10 +105,147 @@ func {{.HandlerName}}(svcCtx *svc.ServiceContext) http.HandlerFunc {
 }
 ```
 
+### 修改 `model` 模板
+
+##### interface-insert.tpl
+```
+Insert(ctx context.Context, session sqlx.Session, data *{{.upperStartCamelObject}}) (sql.Result,error)
+```
+
+##### interface-delete.tpl
+```
+Delete(ctx context.Context, session sqlx.Session, {{.lowerStartCamelPrimaryKey}} {{.dataType}}) error
+```
+
+##### interface-update.tpl
+```
+Update(ctx context.Context, session sqlx.Session, newData *{{.upperStartCamelObject}}) error
+```
+
+##### model.tpl
+```
+package {{.pkg}}
+{{if .withCache}}
+import (
+  "context"
+	"github.com/zeromicro/go-zero/core/stores/cache"
+	"github.com/zeromicro/go-zero/core/stores/sqlx"
+)
+{{else}}
+import (
+  "context"
+  "github.com/zeromicro/go-zero/core/stores/sqlx"
+)
+{{end}}
+var _ {{.upperStartCamelObject}}Model = (*custom{{.upperStartCamelObject}}Model)(nil)
+
+type (
+	// {{.upperStartCamelObject}}Model is an interface to be customized, add more methods here,
+	// and implement the added methods in custom{{.upperStartCamelObject}}Model.
+	{{.upperStartCamelObject}}Model interface {
+		{{.lowerStartCamelObject}}Model
+    Trans(ctx context.Context, fn func(ctx context.Context, session sqlx.Session) error) error
+	}
+
+	custom{{.upperStartCamelObject}}Model struct {
+		*default{{.upperStartCamelObject}}Model
+	}
+)
+
+// New{{.upperStartCamelObject}}Model returns a model for the database table.
+func New{{.upperStartCamelObject}}Model(conn sqlx.SqlConn{{if .withCache}}, c cache.CacheConf{{end}}) {{.upperStartCamelObject}}Model {
+	return &custom{{.upperStartCamelObject}}Model{
+		default{{.upperStartCamelObject}}Model: new{{.upperStartCamelObject}}Model(conn{{if .withCache}}, c{{end}}),
+	}
+}
+
+func (c *custom{{.upperStartCamelObject}}Model) Trans(ctx context.Context, fn func(ctx context.Context, session sqlx.Session) error) error {
+	return c.TransactCtx(ctx, func(ctx context.Context, session sqlx.Session) error {
+		return fn(ctx, session)
+	})
+}
+```
+
+##### insert.tpl
+```
+
+func (m *default{{.upperStartCamelObject}}Model) Insert(ctx context.Context, session sqlx.Session, data *{{.upperStartCamelObject}}) (sql.Result,error) {
+	{{if .withCache}}{{.keys}}
+    ret, err := m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+		query := fmt.Sprintf("insert into %s (%s) values ({{.expression}})", m.table, {{.lowerStartCamelObject}}RowsExpectAutoSet)
+    if session != nil {
+      return session.ExecCtx(ctx, query, {{.expressionValues}})
+    }
+		return conn.ExecCtx(ctx, query, {{.expressionValues}})
+	}, {{.keyValues}}){{else}}query := fmt.Sprintf("insert into %s (%s) values ({{.expression}})", m.table, {{.lowerStartCamelObject}}RowsExpectAutoSet)
+    s := m.conn
+    if session != nil {
+      s = session
+    }
+    ret,err:=s.ExecCtx(ctx, query, {{.expressionValues}}){{end}}
+	return ret,err
+}
+
+```
+
+##### update.tpl
+```
+
+func (m *default{{.upperStartCamelObject}}Model) Update(ctx context.Context, session sqlx.Session, {{if .containsIndexCache}}newData{{else}}data{{end}} *{{.upperStartCamelObject}}) error {
+	{{if .withCache}}{{if .containsIndexCache}}data, err:=m.FindOne(ctx, newData.{{.upperStartCamelPrimaryKey}})
+	if err!=nil{
+		return err
+	}
+
+{{end}}	{{.keys}}
+    _, {{if .containsIndexCache}}err{{else}}err:{{end}}= m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+		query := fmt.Sprintf("update %s set %s where {{.originalPrimaryKey}} = {{if .postgreSql}}$1{{else}}?{{end}}", m.table, {{.lowerStartCamelObject}}RowsWithPlaceHolder)
+    if session != nil {
+      return session.ExecCtx(ctx, query, {{.expressionValues}})  
+    }
+		return conn.ExecCtx(ctx, query, {{.expressionValues}})
+	}, {{.keyValues}}){{else}}query := fmt.Sprintf("update %s set %s where {{.originalPrimaryKey}} = {{if .postgreSql}}$1{{else}}?{{end}}", m.table, {{.lowerStartCamelObject}}RowsWithPlaceHolder)
+    s := m.conn
+    if session != nil {
+      s = session
+    }
+    _,err:=s.ExecCtx(ctx, query, {{.expressionValues}}){{end}}
+	return err
+}
+
+```
+
+##### delete.tpl
+```
+
+func (m *default{{.upperStartCamelObject}}Model) Delete(ctx context.Context, session sqlx.Session, {{.lowerStartCamelPrimaryKey}} {{.dataType}}) error {
+	{{if .withCache}}{{if .containsIndexCache}}data, err:=m.FindOne(ctx, {{.lowerStartCamelPrimaryKey}})
+	if err!=nil{
+		return err
+	}
+
+{{end}}	{{.keys}}
+    _, err {{if .containsIndexCache}}={{else}}:={{end}} m.ExecCtx(ctx, func(ctx context.Context, conn sqlx.SqlConn) (result sql.Result, err error) {
+		query := fmt.Sprintf("delete from %s where {{.originalPrimaryKey}} = {{if .postgreSql}}$1{{else}}?{{end}}", m.table)
+    if session != nil {
+      return session.ExecCtx(ctx, query, {{.lowerStartCamelPrimaryKey}})  
+    }
+		return conn.ExecCtx(ctx, query, {{.lowerStartCamelPrimaryKey}})
+	}, {{.keyValues}}){{else}}query := fmt.Sprintf("delete from %s where {{.originalPrimaryKey}} = {{if .postgreSql}}$1{{else}}?{{end}}", m.table)
+    s := m.conn
+    if session != nil {
+      s = session
+    }
+		_,err:=s.ExecCtx(ctx, query, {{.lowerStartCamelPrimaryKey}}){{end}}
+	return err
+}
+
+```
+
 ### 根据 `DDL` 生成 `MODEL`
 
-1. 修改 ddl `vim ./model/ddl.sql`
-2. 在项目根目录执行 `goctl model mysql ddl -src ./model/ddl.sql -dir ./model -c`
+1. 修改 ddl `cd ./model && vim ./ddl.sql`
+2. 在项目根目录执行 `goctl model mysql ddl -src ./ddl.sql -dir . -c`
 
 
 ### 生成 `api` 或者 `rpc` 代码
@@ -146,3 +285,12 @@ curl --location --request POST 'http://localhost:8214/user/login' \
 curl 'http://localhost:8214/user/info' --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjkxOTk1MzgsImlhdCI6MTY2OTE5MjMzOCwidXNlcklkIjoxfQ.pK06HqrU4qu0mC7Txje4h09rsRuYH2PelxEJ6sDMhoo' \
 --header 'Content-Type: application/json'
 ```
+
+### 常用包
+
+* cast类型转换：`go get github.com/spf13/cast`
+* crontab任务：`go get github.com/robfig/cron/v3`
+* err输出：`go get github.com/pkg/errors`
+* copier：`go get github.com/jinzhu/copier`
+* id生成：`go get github.com/sony/sonyflake`
+* validator参数验证：`go get github.com/go-playground/validator/v10`

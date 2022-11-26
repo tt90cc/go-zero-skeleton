@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/zeromicro/go-zero/core/logx"
-	"tt90.cc/ucenter/common"
+	"tt90.cc/ucenter/common/globalkey"
 	"tt90.cc/ucenter/rpc/internal/svc"
 )
 
@@ -23,7 +23,7 @@ func NewJobsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *JobsLogic {
 }
 
 func (l *JobsLogic) HelloWorld() {
-	tryLock := l.svcCtx.TryLock(fmt.Sprintf(common.RedisLock, "demo"), 10)
+	tryLock := l.svcCtx.TryLock(fmt.Sprintf(globalkey.RedisLock, "demo"), 10)
 	if !tryLock {
 		l.Logger.Info("get lock failed.")
 		return
