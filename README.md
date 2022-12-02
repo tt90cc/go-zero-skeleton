@@ -85,7 +85,6 @@ package handler
 
 import (
     "net/http"
-    "qidianbox.com/ucenter/common/response"
     {{.ImportPackages}}
 )
 
