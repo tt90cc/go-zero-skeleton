@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $# -lt 2 ]; then
-  echo "err: serve or env not found. env in [prod, test]. eg: ./build.sh user-rpc prod"
+  echo "err: serve or env not found. env in [prod, test]. eg: ./build.sh rpc prod"
   exit 1
 fi
 
@@ -11,17 +11,17 @@ ENV=$2
 help() {
     echo "Usage:"
     echo "    ./build.sh [服务] [环境(test|prod)]"
-    echo "    ./build.sh user-rpc prod        [*] 编译 用户 rpc 服务"
-    echo "    ./build.sh user-api prod        [*] 编译 用户 api 服务"
+    echo "    ./build.sh rpc prod        [*] 编译 rpc 服务"
+    echo "    ./build.sh api prod        [*] 编译 api 服务"
 }
 
 case $1 in
-user-rpc)
-  DOCKER_BUILDKIT=0 docker build -t "serve."${SERVE_NAME} --build-arg CONF_ENV="${ENV}" -f ./rpc/Dockerfile .
+rpc)
+  DOCKER_BUILDKIT=0 docker build -t "serve.ucenter_"${SERVE_NAME} --build-arg CONF_ENV="${ENV}" -f ./rpc/Dockerfile .
   docker image prune -f
   ;;
-user-api)
-  DOCKER_BUILDKIT=0 docker build -t "serve."${SERVE_NAME} --build-arg CONF_ENV="${ENV}" -f ./api/Dockerfile .
+api)
+  DOCKER_BUILDKIT=0 docker build -t "serve.ucenter_"${SERVE_NAME} --build-arg CONF_ENV="${ENV}" -f ./api/Dockerfile .
   docker image prune -f
   ;;
 *)

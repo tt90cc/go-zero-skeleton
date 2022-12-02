@@ -12,7 +12,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN go build -ldflags="-s -w" -o main ./api/ucenter.go
+RUN go mod tidy && go build -ldflags="-s -w" -o main ./api/ucenter.go
 
 ARG CONF_ENV
 
