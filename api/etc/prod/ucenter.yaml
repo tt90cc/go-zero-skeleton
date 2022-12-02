@@ -1,6 +1,7 @@
 Name: Ucenter
 Host: 0.0.0.0
 Port: 8214
+Mode: pro
 Log:
   Mode: file
 UcenterRpc:

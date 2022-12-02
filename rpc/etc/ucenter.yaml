@@ -1,5 +1,6 @@
 Name: ucenter.rpc
 ListenOn: 127.0.0.1:8213
+Mode: dev
 Log:
 #  Mode: file
 #  Path: ../logs

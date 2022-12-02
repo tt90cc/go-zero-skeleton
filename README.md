@@ -285,6 +285,18 @@ curl 'http://localhost:8214/user/info' --header 'Authorization: Bearer eyJhbGciO
 --header 'Content-Type: application/json'
 ```
 
+### 运行服务
+
+##### 1.编译
+```
+./build.sh rpc prod
+```
+
+##### 2.运行容器
+```
+docker run -d --name serve.ucenter_rpc -p 8213:8213 -v /tmp/logs:/app/logs serve.ucenter_rpc
+```
+
 ### 常用包
 
 * cast类型转换：`go get github.com/spf13/cast`
@@ -293,3 +305,4 @@ curl 'http://localhost:8214/user/info' --header 'Authorization: Bearer eyJhbGciO
 * copier：`go get github.com/jinzhu/copier`
 * id生成：`go get github.com/sony/sonyflake`
 * validator参数验证：`go get github.com/go-playground/validator/v10`
+* 微信公众号小程序开发：`go get github.com/silenceper/wechat/v2`
