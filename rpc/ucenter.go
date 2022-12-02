@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/zeromicro/go-zero/core/threading"
 	"tt90.cc/ucenter/rpc/internal/config"
 	"tt90.cc/ucenter/rpc/internal/jobs"
 	"tt90.cc/ucenter/rpc/internal/server"
@@ -35,7 +36,9 @@ func main() {
 	})
 	defer s.Stop()
 
-	jobs.RegisterJobs(ctx)
+	threading.GoSafe(func() {
+		jobs.RegisterJobs(ctx)
+	})
 
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)
 	s.Start()

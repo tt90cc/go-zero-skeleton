@@ -1,5 +1,7 @@
 Name: ucenter.rpc
 ListenOn: 127.0.0.1:8080
+Log:
+  Mode: file
 Etcd:
   Hosts:
   - 127.0.0.1:2379

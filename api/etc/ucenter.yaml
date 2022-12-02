@@ -2,6 +2,8 @@ Name: Ucenter
 Host: 0.0.0.0
 Port: 8214
 Log:
+  #  Mode: file
+  #  Path: ../logs
   Encoding: plain
 UcenterRpc:
   Etcd:

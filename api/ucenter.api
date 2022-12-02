@@ -1,22 +1,22 @@
-type (
-	LoginReq {
-		Username string `json:"username"`
-		Password string `json:"password"`
-	}
-	LoginReply {
-		Id           int64  `json:"id"`
-		Account      string `json:"account"`
-		AccessToken  string `json:"accessToken"`
-		AccessExpire int64  `json:"access_expire"`
-		RefreshAfter int64  `json:"refresh_after"`
-	}
-)
-
+type LoginReq {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+type LoginReply {
+	Id           int64  `json:"id"`
+	Account      string `json:"account"`
+	AccessToken  string `json:"accessToken"`
+	AccessExpire int64  `json:"access_expire"`
+	RefreshAfter int64  `json:"refresh_after"`
+}
 type UserinfoReply {
 	Id      int64  `json:"id"`
 	Account string `json:"account"`
 }
 
+@server(
+	prefix: "ucenter"
+)
 service Ucenter {
 	@handler Login
 	post /user/login (LoginReq) returns (LoginReply)
@@ -24,6 +24,7 @@ service Ucenter {
 
 @server(
 	jwt: Auth
+	prefix: "ucenter"
 )
 service Ucenter {
 	@handler Userinfo
