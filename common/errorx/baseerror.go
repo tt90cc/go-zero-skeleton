@@ -12,10 +12,15 @@ func (r *CodeError) Error() string {
 	return r.Message
 }
 
-func NewCodeError(code int) error {
+func NewCodeError(code int, message ...string) error {
+	msg := MapErrMsg(code)
+	if len(message) > 0 {
+		msg = message[0]
+	}
+
 	return &CodeError{
 		Code:    code,
-		Message: MapErrMsg(code),
+		Message: msg,
 	}
 }
 
@@ -27,14 +32,14 @@ func MapErrMsg(errcode int) string {
 	}
 }
 
-type CodeErrorResponse struct {
+type codeErrorResponse struct {
 	Code    int         `json:"code"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data,omitempty"`
 }
 
-func (r *CodeError) Info() *CodeErrorResponse {
-	return &CodeErrorResponse{
+func (r *CodeError) Info() *codeErrorResponse {
+	return &codeErrorResponse{
 		Code:    r.Code,
 		Message: r.Message,
 		Data:    r.Data,
