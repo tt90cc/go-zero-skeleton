@@ -3,6 +3,7 @@ module tt90.cc/ucenter
 go 1.16
 
 require (
+	github.com/Masterminds/squirrel v1.5.3 // indirect
 	github.com/golang-jwt/jwt/v4 v4.4.2
 	github.com/jinzhu/copier v0.3.5
 	github.com/pkg/errors v0.9.1

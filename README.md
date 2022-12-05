@@ -127,12 +127,14 @@ package {{.pkg}}
 {{if .withCache}}
 import (
   "context"
+  "github.com/Masterminds/squirrel"
 	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 {{else}}
 import (
   "context"
+  "github.com/Masterminds/squirrel"
   "github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 {{end}}
@@ -144,6 +146,9 @@ type (
 	{{.upperStartCamelObject}}Model interface {
 		{{.lowerStartCamelObject}}Model
     Trans(ctx context.Context, fn func(ctx context.Context, session sqlx.Session) error) error
+    RowBuilder() squirrel.SelectBuilder
+		CountBuilder(field string) squirrel.SelectBuilder
+		SumBuilder(field string) squirrel.SelectBuilder
 	}
 
 	custom{{.upperStartCamelObject}}Model struct {
@@ -162,6 +167,21 @@ func (c *custom{{.upperStartCamelObject}}Model) Trans(ctx context.Context, fn fu
 	return c.TransactCtx(ctx, func(ctx context.Context, session sqlx.Session) error {
 		return fn(ctx, session)
 	})
+}
+
+// export logic
+func (c *custom{{.upperStartCamelObject}}Model) RowBuilder() squirrel.SelectBuilder {
+	return squirrel.Select({{.lowerStartCamelObject}}Rows).From(c.table)
+}
+
+// export logic
+func (c *custom{{.upperStartCamelObject}}Model) CountBuilder(field string) squirrel.SelectBuilder {
+	return squirrel.Select("COUNT(" + field + ")").From(c.table)
+}
+
+// export logic
+func (c *custom{{.upperStartCamelObject}}Model) SumBuilder(field string) squirrel.SelectBuilder {
+	return squirrel.Select("IFNULL(SUM(" + field + "),0)").From(c.table)
 }
 ```
 
