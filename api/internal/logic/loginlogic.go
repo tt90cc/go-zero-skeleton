@@ -6,6 +6,7 @@ import (
 	"time"
 	"tt90.cc/ucenter/api/internal/svc"
 	"tt90.cc/ucenter/api/internal/types"
+	"tt90.cc/ucenter/common/ctxdata"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -44,7 +45,7 @@ func (l *LoginLogic) getJwtToken(secretKey string, iat, seconds, userId int64) (
 	claims := make(jwt.MapClaims)
 	claims["exp"] = iat + seconds
 	claims["iat"] = iat
-	claims["userId"] = userId
+	claims[ctxdata.CtxKeyJwtUserId] = userId
 	token := jwt.New(jwt.SigningMethodHS256)
 	token.Claims = claims
 	return token.SignedString([]byte(secretKey))

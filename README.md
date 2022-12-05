@@ -5,38 +5,45 @@
 │   ├── Dockerfile
 │   ├── etc
 │   │   ├── prod
-│   │   │   └── ucenter.yaml
 │   │   ├── test
-│   │   │   └── ucenter.yaml
 │   │   └── ucenter.yaml
 │   ├── internal
 │   │   ├── config
-│   │   │   └── config.go
 │   │   ├── handler
-│   │   │   ├── loginhandler.go
-│   │   │   ├── routes.go
-│   │   │   └── userinfohandler.go
 │   │   ├── logic
-│   │   │   ├── loginlogic.go
-│   │   │   └── userinfologic.go
 │   │   ├── svc
-│   │   │   └── servicecontext.go
 │   │   └── types
-│   │       └── types.go
+│   ├── t_test.go
 │   ├── ucenter.api
 │   └── ucenter.go
 ├── build.sh
 ├── common
-│   ├── const.go
 │   ├── cryptx
+│   ├── ctxdata
+│   │   └── ctxData.go
 │   ├── errorx
-│   │   └── baseerror.go
+│   │   ├── baseerror.go
+│   │   └── errcode.go
+│   ├── globalkey
+│   │   ├── constantKey.go
+│   │   └── redisCacheKey.go
 │   ├── response
 │   │   └── response.go
-│   └── utils
+│   ├── tool
+│   │   ├── coinconvert.go
+│   │   ├── encryption.go
+│   │   ├── krand.go
+│   │   ├── krand_test.go
+│   │   ├── placeholders.go
+│   │   ├── set.go
+│   │   └── time.go
+│   └── uniqueid
+│       ├── sn.go
+│       ├── sn_test.go
+│       └── uniqueid.go
+├── doc
 ├── go.mod
 ├── go.sum
-├── logs
 ├── model
 │   ├── ddl.sql
 │   ├── tkusermodel.go
@@ -46,26 +53,17 @@
     ├── Dockerfile
     ├── etc
     │   ├── prod
-    │   │   └── ucenter.yaml
     │   ├── test
-    │   │   └── ucenter.yaml
     │   └── ucenter.yaml
     ├── internal
     │   ├── config
-    │   │   └── config.go
     │   ├── jobs
-    │   │   └── jobs.go
     │   ├── logic
-    │   │   ├── jobslogic.go
-    │   │   └── userinfologic.go
     │   ├── server
-    │   │   └── ucenterserver.go
     │   └── svc
-    │       └── servicecontext.go
+    ├── t_test.go
     ├── types
     │   └── ucenter
-    │       ├── ucenter.pb.go
-    │       └── ucenter_grpc.pb.go
     ├── ucenter
     │   └── ucenter.go
     ├── ucenter.go
@@ -105,21 +103,6 @@ func {{.HandlerName}}(svcCtx *svc.ServiceContext) http.HandlerFunc {
 ```
 
 ### 修改 `model` 模板
-
-##### interface-insert.tpl
-```
-Insert(ctx context.Context, session sqlx.Session, data *{{.upperStartCamelObject}}) (sql.Result,error)
-```
-
-##### interface-delete.tpl
-```
-Delete(ctx context.Context, session sqlx.Session, {{.lowerStartCamelPrimaryKey}} {{.dataType}}) error
-```
-
-##### interface-update.tpl
-```
-Update(ctx context.Context, session sqlx.Session, newData *{{.upperStartCamelObject}}) error
-```
 
 ##### model.tpl
 ```
@@ -337,6 +320,21 @@ func (c *custom{{.upperStartCamelObject}}Model) FindPageListByIdASC(ctx context.
 }
 ```
 
+##### interface-insert.tpl
+```
+Insert(ctx context.Context, session sqlx.Session, data *{{.upperStartCamelObject}}) (sql.Result,error)
+```
+
+##### interface-delete.tpl
+```
+Delete(ctx context.Context, session sqlx.Session, {{.lowerStartCamelPrimaryKey}} {{.dataType}}) error
+```
+
+##### interface-update.tpl
+```
+Update(ctx context.Context, session sqlx.Session, newData *{{.upperStartCamelObject}}) error
+```
+
 ##### insert.tpl
 ```
 
@@ -418,6 +416,14 @@ func (m *default{{.upperStartCamelObject}}Model) Delete(ctx context.Context, ses
 1. 修改 ddl `cd ./model && vim ./ddl.sql`
 2. 在项目根目录执行 `goctl model mysql ddl -src ./ddl.sql -dir . -c`
 
+##### 复杂查询
+
+```go
+squirrel.Or{squirrel.Expr("id=?", cast.ToInt64(req.Name)), squirrel.And{squirrel.Eq{"name": req.Name}}}
+// squirrel.Or{squirrel.Eq{"id": cast.ToInt64(req.Name)}, squirrel.And{squirrel.Eq{"name": req.Name}}}
+
+Where("FIND_IN_SET(?, platform_type)", req.PlatformType)
+```
 
 ### 生成 `api` 或者 `rpc` 代码
 
