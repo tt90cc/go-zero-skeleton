@@ -3,17 +3,15 @@ package svc
 import (
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
-	"github.com/zeromicro/go-zero/zrpc"
 	"tt90.cc/ucenter/api/internal/config"
 	"tt90.cc/ucenter/model"
-	"tt90.cc/ucenter/rpc/ucenter"
 )
 
 type ServiceContext struct {
-	Config     config.Config
-	Redis      *redis.Redis
-	UcenterRpc ucenter.Ucenter
-	UserModel  model.TkUserModel
+	Config config.Config
+	Redis  *redis.Redis
+	// UcenterRpc ucenter.Ucenter
+	UserModel model.TkUserModel
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -24,8 +22,8 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			r.Type = c.RedisConf.Type
 			r.Pass = c.RedisConf.Pass
 		}),
-		UcenterRpc: ucenter.NewUcenter(zrpc.MustNewClient(c.UcenterRpc)),
-		UserModel:  model.NewTkUserModel(conn, c.CacheRedis),
+		// UcenterRpc: ucenter.NewUcenter(zrpc.MustNewClient(c.UcenterRpc)),
+		UserModel: model.NewTkUserModel(conn, c.CacheRedis),
 	}
 }
 

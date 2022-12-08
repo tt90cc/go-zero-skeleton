@@ -4,12 +4,10 @@ import (
 	"context"
 	"github.com/jinzhu/copier"
 	"github.com/pkg/errors"
+	"github.com/zeromicro/go-zero/core/logx"
 	"tt90.cc/ucenter/api/internal/svc"
 	"tt90.cc/ucenter/api/internal/types"
 	"tt90.cc/ucenter/common/errorx"
-	"tt90.cc/ucenter/rpc/types/ucenter"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type UserinfoLogic struct {
@@ -27,7 +25,8 @@ func NewUserinfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Userinfo
 }
 
 func (l *UserinfoLogic) Userinfo() (resp *types.UserinfoReply, err error) {
-	userInfo, err := l.svcCtx.UcenterRpc.UserInfo(l.ctx, &ucenter.UserInfoReq{Id: 1})
+	// userInfo, err := l.svcCtx.UcenterRpc.UserInfo(l.ctx, &ucenter.UserInfoReq{Id: 1})
+	userInfo, err := &types.UserinfoReply{Id: 1, Account: "admin"}, nil
 	if err != nil {
 		return nil, errors.Wrapf(errorx.NewCodeError(errorx.ERR_DEFAULT), "请求UcenterRpc失败. id:%d,err:%v", 1, err)
 	}

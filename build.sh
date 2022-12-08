@@ -17,11 +17,11 @@ help() {
 
 case $1 in
 rpc)
-  DOCKER_BUILDKIT=0 docker build -t "serve.ucenter_"${SERVE_NAME} --build-arg CONF_ENV="${ENV}" -f ./rpc/Dockerfile .
+  DOCKER_BUILDKIT=0 docker build -t "serve.ucenter-"${SERVE_NAME} --build-arg CONF_ENV="${ENV}" -f ./rpc/Dockerfile .
   docker image prune -f
   ;;
 api)
-  DOCKER_BUILDKIT=0 docker build -t "serve.ucenter_"${SERVE_NAME} --build-arg CONF_ENV="${ENV}" -f ./api/Dockerfile .
+  DOCKER_BUILDKIT=0 docker build -t "serve.ucenter-"${SERVE_NAME} --build-arg CONF_ENV="${ENV}" -f ./api/Dockerfile .
   docker image prune -f
   ;;
 *)
