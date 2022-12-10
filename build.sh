@@ -70,7 +70,7 @@ printEnv(){
 build(){
   printf "Build Docker \n"
   printf "============================================\n"
-  DOCKER_BUILDKIT=0 docker build -t $full_serve_name --build-arg CONF_ENV="${cluster}" -f $src_path"/Dockerfile" .
+  DOCKER_BUILDKIT=0 docker build -t $full_serve_name --build-arg SRC="${src}" --build-arg CONF_ENV="${cluster}" -f $src_path"/Dockerfile" .
   docker image prune -f
   if [ $? != 0 ]; then
       printf "docker build failed.\n"

@@ -1,6 +1,6 @@
 module tt90.cc/ucenter
 
-go 1.16
+go 1.18
 
 require (
 	github.com/Masterminds/squirrel v1.5.3 // indirect

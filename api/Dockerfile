@@ -12,13 +12,16 @@ WORKDIR /app
 
 COPY . .
 
-RUN go mod tidy && go build -ldflags="-s -w" -o main ./api/ucenter.go
+ARG SRC
 
+RUN go mod tidy && go build -ldflags="-s -w" -o main ./${SRC}/ucenter.go
+
+ARG SRC
 ARG CONF_ENV
 
 RUN mkdir -p publish/etc && \
     cp ./main publish && \
-    cp -r ./api/etc/${CONF_ENV}/* publish/etc
+    cp -r ./${SRC}/etc/${CONF_ENV}/* publish/etc
 
 
 FROM alpine
