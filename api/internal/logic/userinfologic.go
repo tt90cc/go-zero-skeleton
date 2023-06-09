@@ -4,10 +4,10 @@ import (
 	"context"
 	"github.com/jinzhu/copier"
 	"github.com/pkg/errors"
+	"github.com/tt90cc/utils/errorx"
 	"github.com/zeromicro/go-zero/core/logx"
-	"tt90.cc/ucenter/api/internal/svc"
-	"tt90.cc/ucenter/api/internal/types"
-	"tt90.cc/ucenter/common/errorx"
+	"tt90.cc/ucenter/internal/svc"
+	"tt90.cc/ucenter/internal/types"
 )
 
 type UserinfoLogic struct {

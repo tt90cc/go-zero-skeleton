@@ -3,9 +3,9 @@ package logic
 import (
 	"context"
 	"fmt"
+	"github.com/tt90cc/utils/globalkey"
 	"github.com/zeromicro/go-zero/core/logx"
-	"tt90.cc/ucenter/common/globalkey"
-	"tt90.cc/ucenter/rpc/internal/svc"
+	"tt90.cc/ucenter/internal/svc"
 )
 
 type JobsLogic struct {

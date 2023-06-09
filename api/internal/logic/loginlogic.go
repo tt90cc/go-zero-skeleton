@@ -3,10 +3,10 @@ package logic
 import (
 	"context"
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/tt90cc/utils/ctxdata"
 	"time"
-	"tt90.cc/ucenter/api/internal/svc"
-	"tt90.cc/ucenter/api/internal/types"
-	"tt90.cc/ucenter/common/ctxdata"
+	"tt90.cc/ucenter/internal/svc"
+	"tt90.cc/ucenter/internal/types"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

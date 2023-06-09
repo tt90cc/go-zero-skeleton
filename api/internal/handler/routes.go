@@ -4,7 +4,7 @@ package handler
 import (
 	"net/http"
 
-	"tt90.cc/ucenter/api/internal/svc"
+	"tt90.cc/ucenter/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
 )

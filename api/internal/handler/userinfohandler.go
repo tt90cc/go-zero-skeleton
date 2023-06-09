@@ -1,10 +1,10 @@
 package handler
 
 import (
+	"github.com/tt90cc/utils/response"
 	"net/http"
-	"tt90.cc/ucenter/api/internal/logic"
-	"tt90.cc/ucenter/api/internal/svc"
-	"tt90.cc/ucenter/common/response"
+	"tt90.cc/ucenter/internal/logic"
+	"tt90.cc/ucenter/internal/svc"
 )
 
 func UserinfoHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {

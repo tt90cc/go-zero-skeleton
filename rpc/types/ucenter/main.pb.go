@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.27.1
 // 	protoc        v3.19.4
-// source: app/ucenter/ucenter.proto
+// source: main.proto
 
 package ucenter
 
@@ -31,7 +31,7 @@ type UserInfoReq struct {
 func (x *UserInfoReq) Reset() {
 	*x = UserInfoReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_app_ucenter_rpc_ucenter_proto_msgTypes[0]
+		mi := &file_main_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -44,7 +44,7 @@ func (x *UserInfoReq) String() string {
 func (*UserInfoReq) ProtoMessage() {}
 
 func (x *UserInfoReq) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ucenter_rpc_ucenter_proto_msgTypes[0]
+	mi := &file_main_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -57,7 +57,7 @@ func (x *UserInfoReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserInfoReq.ProtoReflect.Descriptor instead.
 func (*UserInfoReq) Descriptor() ([]byte, []int) {
-	return file_app_ucenter_rpc_ucenter_proto_rawDescGZIP(), []int{0}
+	return file_main_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *UserInfoReq) GetId() int64 {
@@ -79,7 +79,7 @@ type UserInfoReply struct {
 func (x *UserInfoReply) Reset() {
 	*x = UserInfoReply{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_app_ucenter_rpc_ucenter_proto_msgTypes[1]
+		mi := &file_main_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -92,7 +92,7 @@ func (x *UserInfoReply) String() string {
 func (*UserInfoReply) ProtoMessage() {}
 
 func (x *UserInfoReply) ProtoReflect() protoreflect.Message {
-	mi := &file_app_ucenter_rpc_ucenter_proto_msgTypes[1]
+	mi := &file_main_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -105,7 +105,7 @@ func (x *UserInfoReply) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserInfoReply.ProtoReflect.Descriptor instead.
 func (*UserInfoReply) Descriptor() ([]byte, []int) {
-	return file_app_ucenter_rpc_ucenter_proto_rawDescGZIP(), []int{1}
+	return file_main_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *UserInfoReply) GetId() int64 {
@@ -122,43 +122,41 @@ func (x *UserInfoReply) GetAccount() string {
 	return ""
 }
 
-var File_app_ucenter_rpc_ucenter_proto protoreflect.FileDescriptor
+var File_main_proto protoreflect.FileDescriptor
 
-var file_app_ucenter_rpc_ucenter_proto_rawDesc = []byte{
-	0x0a, 0x1d, 0x61, 0x70, 0x70, 0x2f, 0x75, 0x63, 0x65, 0x6e, 0x74, 0x65, 0x72, 0x2f, 0x72, 0x70,
-	0x63, 0x2f, 0x75, 0x63, 0x65, 0x6e, 0x74, 0x65, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12,
-	0x04, 0x75, 0x73, 0x65, 0x72, 0x22, 0x1d, 0x0a, 0x0b, 0x55, 0x73, 0x65, 0x72, 0x49, 0x6e, 0x66,
-	0x6f, 0x52, 0x65, 0x71, 0x12, 0x0e, 0x0a, 0x02, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03,
-	0x52, 0x02, 0x49, 0x64, 0x22, 0x39, 0x0a, 0x0d, 0x55, 0x73, 0x65, 0x72, 0x49, 0x6e, 0x66, 0x6f,
-	0x52, 0x65, 0x70, 0x6c, 0x79, 0x12, 0x0e, 0x0a, 0x02, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x03, 0x52, 0x02, 0x49, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x32,
-	0x3d, 0x0a, 0x07, 0x55, 0x63, 0x65, 0x6e, 0x74, 0x65, 0x72, 0x12, 0x32, 0x0a, 0x08, 0x55, 0x73,
-	0x65, 0x72, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x11, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x55, 0x73,
-	0x65, 0x72, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x71, 0x1a, 0x13, 0x2e, 0x75, 0x73, 0x65, 0x72,
-	0x2e, 0x55, 0x73, 0x65, 0x72, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x42, 0x0b,
-	0x5a, 0x09, 0x2e, 0x2f, 0x75, 0x63, 0x65, 0x6e, 0x74, 0x65, 0x72, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+var file_main_proto_rawDesc = []byte{
+	0x0a, 0x0a, 0x6d, 0x61, 0x69, 0x6e, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x04, 0x75, 0x73,
+	0x65, 0x72, 0x22, 0x1d, 0x0a, 0x0b, 0x55, 0x73, 0x65, 0x72, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65,
+	0x71, 0x12, 0x0e, 0x0a, 0x02, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02, 0x49,
+	0x64, 0x22, 0x39, 0x0a, 0x0d, 0x55, 0x73, 0x65, 0x72, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x70,
+	0x6c, 0x79, 0x12, 0x0e, 0x0a, 0x02, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x02,
+	0x49, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x07, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x32, 0x3d, 0x0a, 0x07,
+	0x55, 0x63, 0x65, 0x6e, 0x74, 0x65, 0x72, 0x12, 0x32, 0x0a, 0x08, 0x55, 0x73, 0x65, 0x72, 0x49,
+	0x6e, 0x66, 0x6f, 0x12, 0x11, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x49,
+	0x6e, 0x66, 0x6f, 0x52, 0x65, 0x71, 0x1a, 0x13, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x55, 0x73,
+	0x65, 0x72, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x42, 0x0b, 0x5a, 0x09, 0x2e,
+	0x2f, 0x75, 0x63, 0x65, 0x6e, 0x74, 0x65, 0x72, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_app_ucenter_rpc_ucenter_proto_rawDescOnce sync.Once
-	file_app_ucenter_rpc_ucenter_proto_rawDescData = file_app_ucenter_rpc_ucenter_proto_rawDesc
+	file_main_proto_rawDescOnce sync.Once
+	file_main_proto_rawDescData = file_main_proto_rawDesc
 )
 
-func file_app_ucenter_rpc_ucenter_proto_rawDescGZIP() []byte {
-	file_app_ucenter_rpc_ucenter_proto_rawDescOnce.Do(func() {
-		file_app_ucenter_rpc_ucenter_proto_rawDescData = protoimpl.X.CompressGZIP(file_app_ucenter_rpc_ucenter_proto_rawDescData)
+func file_main_proto_rawDescGZIP() []byte {
+	file_main_proto_rawDescOnce.Do(func() {
+		file_main_proto_rawDescData = protoimpl.X.CompressGZIP(file_main_proto_rawDescData)
 	})
-	return file_app_ucenter_rpc_ucenter_proto_rawDescData
+	return file_main_proto_rawDescData
 }
 
-var file_app_ucenter_rpc_ucenter_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_app_ucenter_rpc_ucenter_proto_goTypes = []interface{}{
+var file_main_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_main_proto_goTypes = []interface{}{
 	(*UserInfoReq)(nil),   // 0: user.UserInfoReq
 	(*UserInfoReply)(nil), // 1: user.UserInfoReply
 }
-var file_app_ucenter_rpc_ucenter_proto_depIdxs = []int32{
+var file_main_proto_depIdxs = []int32{
 	0, // 0: user.Ucenter.UserInfo:input_type -> user.UserInfoReq
 	1, // 1: user.Ucenter.UserInfo:output_type -> user.UserInfoReply
 	1, // [1:2] is the sub-list for method output_type
@@ -168,13 +166,13 @@ var file_app_ucenter_rpc_ucenter_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_app_ucenter_rpc_ucenter_proto_init() }
-func file_app_ucenter_rpc_ucenter_proto_init() {
-	if File_app_ucenter_rpc_ucenter_proto != nil {
+func init() { file_main_proto_init() }
+func file_main_proto_init() {
+	if File_main_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_app_ucenter_rpc_ucenter_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_main_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UserInfoReq); i {
 			case 0:
 				return &v.state
@@ -186,7 +184,7 @@ func file_app_ucenter_rpc_ucenter_proto_init() {
 				return nil
 			}
 		}
-		file_app_ucenter_rpc_ucenter_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
+		file_main_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*UserInfoReply); i {
 			case 0:
 				return &v.state
@@ -203,18 +201,18 @@ func file_app_ucenter_rpc_ucenter_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_app_ucenter_rpc_ucenter_proto_rawDesc,
+			RawDescriptor: file_main_proto_rawDesc,
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_app_ucenter_rpc_ucenter_proto_goTypes,
-		DependencyIndexes: file_app_ucenter_rpc_ucenter_proto_depIdxs,
-		MessageInfos:      file_app_ucenter_rpc_ucenter_proto_msgTypes,
+		GoTypes:           file_main_proto_goTypes,
+		DependencyIndexes: file_main_proto_depIdxs,
+		MessageInfos:      file_main_proto_msgTypes,
 	}.Build()
-	File_app_ucenter_rpc_ucenter_proto = out.File
-	file_app_ucenter_rpc_ucenter_proto_rawDesc = nil
-	file_app_ucenter_rpc_ucenter_proto_goTypes = nil
-	file_app_ucenter_rpc_ucenter_proto_depIdxs = nil
+	File_main_proto = out.File
+	file_main_proto_rawDesc = nil
+	file_main_proto_goTypes = nil
+	file_main_proto_depIdxs = nil
 }

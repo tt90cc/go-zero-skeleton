@@ -1,0 +1,11 @@
+Name: ucenter.rpc
+ListenOn: 127.0.0.1:8080
+Mode: test
+Log:
+  Mode: file
+Mysql:
+  DataSource: root:root@tcp(127.0.0.1:3306)/store?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+RedisConf:
+  Host: 127.0.0.1:6379
+  Pass: ""
+  Type: node

@@ -2,8 +2,8 @@ package logic
 
 import (
 	"context"
-	"tt90.cc/ucenter/rpc/internal/svc"
-	"tt90.cc/ucenter/rpc/types/ucenter"
+	"tt90.cc/ucenter/internal/svc"
+	"tt90.cc/ucenter/types/ucenter"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )

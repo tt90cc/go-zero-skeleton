@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.19.4
-// source: app/ucenter/ucenter.proto
+// source: main.proto
 
 package ucenter
 
@@ -101,5 +101,5 @@ var Ucenter_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "app/ucenter/ucenter.proto",
+	Metadata: "main.proto",
 }

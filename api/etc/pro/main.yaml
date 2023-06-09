@@ -1,0 +1,19 @@
+Name: Ucenter
+Host: 0.0.0.0
+Port: 8214
+Mode: pro
+Log:
+  Mode: file
+UcenterRpc:
+  Timeout: 10000
+  Endpoints:
+    - 127.0.0.1:8213
+Mysql:
+  DataSource: root:root@tcp(127.0.0.1:3306)/store?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+RedisConf:
+  Host: 127.0.0.1:6379
+  Pass: ""
+  Type: node
+Auth:
+  AccessSecret: LJR91iBw!iojqdgp
+  AccessExpire: 7200

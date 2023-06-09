@@ -3,8 +3,8 @@ package jobs
 import (
 	"context"
 	"github.com/robfig/cron/v3"
-	"tt90.cc/ucenter/rpc/internal/logic"
-	"tt90.cc/ucenter/rpc/internal/svc"
+	"tt90.cc/ucenter/internal/logic"
+	"tt90.cc/ucenter/internal/svc"
 )
 
 func RegisterJobs(serverCtx *svc.ServiceContext) {

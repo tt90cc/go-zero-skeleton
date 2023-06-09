@@ -3,7 +3,7 @@ package svc
 import (
 	"github.com/zeromicro/go-zero/core/stores/redis"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
-	"tt90.cc/ucenter/api/internal/config"
+	"tt90.cc/ucenter/internal/config"
 	"tt90.cc/ucenter/model"
 )
 
@@ -23,20 +23,17 @@ func NewServiceContext(c config.Config) *ServiceContext {
 			r.Pass = c.RedisConf.Pass
 		}),
 		// UcenterRpc: ucenter.NewUcenter(zrpc.MustNewClient(c.UcenterRpc)),
-		UserModel: model.NewTkUserModel(conn, c.CacheRedis),
+		UserModel: model.NewTkUserModel(conn),
 	}
 }
 
 func (s *ServiceContext) TryLock(key string, second int) bool {
-	redisLock := redis.NewRedisLock(s.Redis, key)
-	redisLock.SetExpire(second)
-	if ok, err := redisLock.Acquire(); !ok || err != nil {
+	if ok, err := s.Redis.SetnxEx(key, "lock", second); !ok || err != nil {
 		return false
 	}
 	return true
 }
 
 func (s *ServiceContext) UnLock(key string) {
-	redisLock := redis.NewRedisLock(s.Redis, key)
-	redisLock.Release()
+	s.Redis.Del(key)
 }
