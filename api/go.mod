@@ -3,8 +3,6 @@ module tt90.cc/ucenter
 go 1.18
 
 require (
-	gitee.com/qidianbox/common v0.0.0-20230511082455-46afc3440b81
-	gitee.com/qidianbox/toker-engine-ucenter v0.0.0-20230404065158-67b11769cbeb
 	github.com/Masterminds/squirrel v1.5.4
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/jinzhu/copier v0.3.5

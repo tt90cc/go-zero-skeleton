@@ -57,7 +57,7 @@ mkdir -p ${builder_path}/logs ${builder_path}/etc
 
 mv ${exe} ${builder_path}
 cp -r ${server}/etc/${cluster}/* ${builder_path}/etc
-#cp -r ${server}/templates ${builder_path}
+cp -r ${server}/templates ${builder_path}
 
 cd ${builder_path} && zip -q -r ${exe}.zip *
 
