@@ -1,4 +1,4 @@
-FROM golang:alpine AS builder
+FROM golang:1.18-alpine AS builder
 
 LABEL stage=gobuilder
 
@@ -14,7 +14,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN mkdir -p ~/.ssh && cp ./docs/id_rsa ~/.ssh && chmod 0600 ~/.ssh/id_rsa && ssh-keyscan gitee.com >> ~/.ssh/known_hosts && \
+RUN mkdir -p ~/.ssh && cp ./doc/id_rsa ~/.ssh && chmod 0600 ~/.ssh/id_rsa && ssh-keyscan gitee.com >> ~/.ssh/known_hosts && \
 go env -w GOPRIVATE=gitee.com && \
 go get github.com/tt90cc/utils \
 go mod tidy && go build -ldflags="-s -w" -o main ./main.go
